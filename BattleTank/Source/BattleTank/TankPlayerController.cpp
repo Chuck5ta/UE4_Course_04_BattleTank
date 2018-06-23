@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Engine/World.h"
 #include "TankPlayerController.h"
 #include "BattleTank.h"
 
@@ -43,7 +44,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	FVector OutHitLocation; // Out parameter
 	if (GetSightRayHitLocation(OutHitLocation)) // Has "side-effect", is going to ray/line trace
 	{
-		// UE_LOG(LogTemp, Warning, TEXT("Look direction: %s"), *OutHitLocation.ToString());
+		 UE_LOG(LogTemp, Warning, TEXT("Look direction: %s"), *OutHitLocation.ToString());
         // TODO Tell controlled tank to aim at this point 
 	}
 
@@ -62,9 +63,10 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	FVector LookDirection;
 	if (GetLookDirection(ScreenLocation, LookDirection))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("World direction: %s"), *LookDirection.ToString());
+	    // Line/ray trace along that look direction, and see what we hit (up to max range)
+		GetLookVectorHitLocation(LookDirection, OutHitLocation);
+		// 		UE_LOG(LogTemp, Warning, TEXT("World direction: %s"), *LookDirection.ToString());
 	}
-	// Line/ray trace along that look direction, and see what we hit (up to max range)
 	return true;
 }
 
@@ -78,5 +80,26 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& 
 		LookDirection
 	));
 //UE_LOG(LogTemp, Warning, TEXT("World direction: %s"), *LookDirection.ToString());
+
+}
+
+bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const
+{
+	FHitResult HitResult;
+	FVector StartLocation = PlayerCameraManager->GetCameraLocation();
+	FVector EndLocation = StartLocation + (LookDirection * LineTraceRange);
+	if (GetWorld()->LineTraceSingleByChannel(
+			HitResult,
+			StartLocation,
+			EndLocation,
+			ECollisionChannel::ECC_Visibility)
+		) // Line trace succeeds
+	{
+		// set hit location
+		HitLocation = HitResult.Location;
+		return true;
+	}
+	HitLocation = FVector(0); // may be firing off into empty space/sky
+	return false; // Line trace did not succeed
 
 }
