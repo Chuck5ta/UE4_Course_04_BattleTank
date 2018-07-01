@@ -2,13 +2,13 @@
 
 #pragma once
 
-#include "TankBarrel.h"
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "TankAimingComponent.generated.h"
 
 // Forward Declaration
+class UTankyTurret;
 class UTankBarrel; 
 
 // Holds barrel's properties and Elevate method
@@ -22,15 +22,15 @@ public:
 	UTankAimingComponent();
 
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
-
-	// TODO add SetTurretReference
+	void SetTurretReference(UTankyTurret* TurretoSet);
 
 	void AimAt(FVector HitLocation, float LaunchSpeed);
 
 private:
-	//UStaticMeshComponent* Barrel = nullptr;
+	UTankyTurret* Turret = nullptr;
 	UTankBarrel* Barrel = nullptr;
-	
+
+	void MoveTurretTowards(FVector AimDirection);
 	void MoveBarrelTowards(FVector AimDirection);
 	
 };
