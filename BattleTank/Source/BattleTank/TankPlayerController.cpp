@@ -10,6 +10,7 @@ void ATankPlayerController::BeginPlay()
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Warning, TEXT("PlayerController BeginPlay"));
 
+	/*
 	ATank* PossessedTank = GetControlledTank();
 	if (GetControlledTank() == nullptr)
 	{
@@ -20,6 +21,7 @@ void ATankPlayerController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Tank possessed: %s"), *PossessedTank->GetName());
 	}
+	*/
 }
 
 void ATankPlayerController::Tick(float DeltaTime)

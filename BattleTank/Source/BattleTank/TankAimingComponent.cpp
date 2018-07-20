@@ -2,6 +2,7 @@
 
 
 #include "TankAimingComponent.h"
+#include "TankMovementComponent.h"
 #include "TankBarrel.h"
 #include "TankyTurret.h"
 #include "Kismet/GameplayStatics.h"
