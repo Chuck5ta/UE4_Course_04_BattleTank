@@ -35,4 +35,18 @@ void UTankMovementComponent::IntendMoveBackwards(float Throw)
 	// TODO prevent double-speed due to duel control use
 }
 
+void UTankMovementComponent::IntendTurnRight(float Throw)
+{
+	LeftTrack->SetThrottle(Throw);
+	RightTrack->SetThrottle(-Throw);
+	// TODO prevent double-speed due to duel control use
+}
+
+void UTankMovementComponent::IntendTurnLeft(float Throw)
+{
+	LeftTrack->SetThrottle(-Throw);
+	RightTrack->SetThrottle(Throw);
+	// TODO prevent double-speed due to duel control use
+}
+
 
